@@ -1,0 +1,74 @@
+<!-- items.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Ordering System</title>
+</head>
+<body>
+    <h1>Item List</h1>
+
+    <label for="itemName">Item Name:</label>
+    <input type="text" id="itemName" placeholder="Enter item name">
+
+    <label for="itemPrice">Item Price:</label>
+    <input type="number" id="itemPrice" placeholder="Enter item price">
+
+    <button onclick="addItem()">Add Item</button>
+
+    <h2>Order Summary</h2>
+    <ul id="order-list">
+        <!-- Selected items will be displayed here -->
+    </ul>
+
+    <p>Total: $<span id="total">0.00</span></p>
+
+    <script>
+        let orderItems = [];
+        let total = 0;
+
+        function addItem() {
+            const itemNameInput = document.getElementById('itemName');
+            const itemPriceInput = document.getElementById('itemPrice');
+
+            const itemName = itemNameInput.value.trim();
+            const itemPrice = parseFloat(itemPriceInput.value);
+
+            // Validate inputs
+            if (itemName === '' || isNaN(itemPrice) || itemPrice <= 0) {
+                alert('Please enter a valid item name and price.');
+                return;
+            }
+
+            orderItems.push({ name: itemName, price: itemPrice });
+            total += itemPrice;
+
+            // Update the order list and total
+            updateOrderList();
+
+            // Clear input fields
+            itemNameInput.value = '';
+            itemPriceInput.value = '';
+        }
+
+        function updateOrderList() {
+            const orderList = document.getElementById('order-list');
+            const totalElement = document.getElementById('total');
+
+            // Clear previous items
+            orderList.innerHTML = '';
+
+            // Add the updated items to the order list
+            orderItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+                orderList.appendChild(listItem);
+            });
+
+            // Update the total
+            totalElement.textContent = total.toFixed(2);
+        }
+    </script>
+</body>
+</html>
